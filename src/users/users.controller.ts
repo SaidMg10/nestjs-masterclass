@@ -6,9 +6,13 @@ import {
   Logger,
   Query,
   Body,
-  Headers,
-  Ip,
+  ParseIntPipe,
+  DefaultValuePipe,
+  Patch,
 } from '@nestjs/common';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { GetUsersParamDto } from './dtos/get-users-param.dto';
+import { PatchUserDto } from './dtos/patch-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -16,18 +20,31 @@ export class UsersController {
     this.logger = new Logger(UsersController.name);
   }
 
-  @Get('/:id/:optional?')
-  getUsers(@Param('id') id: any, @Query('limit') limit: any) {
-    this.logger.debug(id);
+  @Get('/:id?')
+  getUsers(
+    @Param() getUsersParamDto: GetUsersParamDto,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+  ) {
+    this.logger.debug(getUsersParamDto instanceof GetUsersParamDto);
+    this.logger.debug({ getUsersParamDto });
+    this.logger.debug(typeof limit);
     this.logger.debug(limit);
+    this.logger.debug(typeof page);
+    this.logger.debug(page);
     return 'You sent a get request to users endpoint';
   }
 
   @Post()
-  createUser(@Body() body: any, @Headers() headers: any, @Ip() ip: any) {
-    this.logger.debug(body);
-    this.logger.debug(headers);
-    this.logger.debug(ip);
+  createUser(@Body() createUserDto: CreateUserDto) {
+    this.logger.debug(createUserDto instanceof CreateUserDto);
+
     return 'You sent a post request to users endpoint';
+  }
+
+  @Patch()
+  patchUser(@Body() patchUserDto: PatchUserDto) {
+    this.logger.debug(patchUserDto instanceof PatchUserDto);
+    return 'You sent a patch request to users endpoint';
   }
 }
