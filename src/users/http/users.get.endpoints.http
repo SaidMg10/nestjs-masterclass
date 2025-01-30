@@ -1,0 +1,5 @@
+## Get Request For Users controller
+
+GET http://localhost:3000/api/users/12445
+?limit=10
+&offset=20
