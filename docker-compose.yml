@@ -1,6 +1,6 @@
 services:
-  inventory_db:
-    container_name: inventory_db
+  blog_db:
+    container_name: blog_db
     image: postgres:16.6
     restart: always
     environment:
@@ -26,7 +26,7 @@ services:
     volumes:
       - ./src:/app/src
     depends_on:
-      - inventory_db
+      - blog_db
     deploy:
       resources:
         limits:
