@@ -2,9 +2,19 @@
 import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { GetUsersParamDto } from '../dtos/get-users-param.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
-
+/**
+ * Class to connect to Users table and perform business operations
+ */
 @Injectable()
 export class UsersService {
+  /**
+   * Constructor de la clase `UsersService`.
+   * Inyecta las dependencias necesarias para el servicio de usuarios,
+   * como el `Logger` para el registro de eventos y el `AuthService` para la gestión de autenticación.
+   *
+   * @param logger - Instancia de Logger para manejar los logs del servicio de usuarios.
+   * @param authService - Instancia del servicio de autenticación, utilizado para las operaciones de login/registro.
+   */
   constructor(
     private readonly logger: Logger,
     @Inject(forwardRef(() => AuthService))
@@ -12,10 +22,15 @@ export class UsersService {
   ) {
     this.logger = new Logger(UsersService.name);
   }
-
+  /**
+   * The method to get all the users from the database
+   * @param getUsersParamDto
+   * @param limit
+   * @param page
+   * @returns
+   */
   findAll(getUsersParamDto: GetUsersParamDto, limit: number, page: number) {
     const isAuth = this.authService.isAuth();
-    this.logger.debug(isAuth);
     return [
       {
         id: 1,
@@ -30,6 +45,11 @@ export class UsersService {
     ];
   }
 
+  /**
+   * The method to get one user from the database by ID
+   * @param id
+   * @returns
+   */
   findOneById(id: string) {
     return {
       id: 3,

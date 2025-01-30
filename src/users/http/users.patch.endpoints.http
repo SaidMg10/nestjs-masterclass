@@ -1,5 +1,5 @@
 ## PATCH Request For Users controller
-PATCH http://localhost:3000/api/users
+PATCH http://localhost:3000/v1/users
 Content-Type: application/json
 
 {
