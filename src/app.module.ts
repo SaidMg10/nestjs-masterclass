@@ -10,6 +10,8 @@ import { CloudinaryService } from './cloudinary/cloudinary.service';
 import { CommonModule } from './common/common.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { UsersModule } from './users/users.module';
+import { PostsModule } from './posts/posts.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { UsersModule } from './users/users.module';
     CommonModule,
     MulterModule.register({ dest: './uploads' }),
     UsersModule,
+    PostsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [CloudinaryService],

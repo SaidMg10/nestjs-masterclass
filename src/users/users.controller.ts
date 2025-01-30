@@ -13,10 +13,14 @@ import {
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
+import { UsersService } from './providers/users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly logger: Logger) {
+  constructor(
+    private readonly logger: Logger,
+    private readonly usersService: UsersService,
+  ) {
     this.logger = new Logger(UsersController.name);
   }
 
@@ -26,13 +30,7 @@ export class UsersController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
   ) {
-    this.logger.debug(getUsersParamDto instanceof GetUsersParamDto);
-    this.logger.debug({ getUsersParamDto });
-    this.logger.debug(typeof limit);
-    this.logger.debug(limit);
-    this.logger.debug(typeof page);
-    this.logger.debug(page);
-    return 'You sent a get request to users endpoint';
+    return this.usersService.findAll(getUsersParamDto, limit, page);
   }
 
   @Post()
