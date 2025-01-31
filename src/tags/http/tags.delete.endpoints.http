@@ -1,0 +1,4 @@
+DELETE http://localhost:3000/v1/tags
+?id=2
+DELETE http://localhost:3000/v1/tags/soft-delete/
+  ?id=4

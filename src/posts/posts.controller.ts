@@ -1,11 +1,13 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Logger,
-  Param,
+  ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './providers/posts.service';
 import { CreatePostDto } from './dtos/create-posts.dto';
@@ -24,9 +26,9 @@ export class PostsController {
   /*
    * GET localhost:300/posts/:userId
    */
-  @Get('/:userId')
-  getPosts(@Param('userId') userId: string) {
-    return this.postsService.findAll(userId);
+  @Get()
+  getPosts() {
+    return this.postsService.findAll();
   }
 
   @ApiOperation({
@@ -38,7 +40,7 @@ export class PostsController {
   })
   @Post()
   createPosts(@Body() createPostDto: CreatePostDto) {
-    this.logger.debug({ createPostDto });
+    return this.postsService.create(createPostDto);
   }
 
   @ApiOperation({
@@ -49,7 +51,12 @@ export class PostsController {
     description: 'You get a 201 response if your post is updated successfully',
   })
   @Patch()
-  updatePost(@Body() patchPostsDto: PatchPostDto) {
-    this.logger.debug({ patchPostsDto });
+  updatePost(@Body() patchPostDto: PatchPostDto) {
+    return this.postsService.update(patchPostDto);
+  }
+
+  @Delete()
+  delete(@Query('id', ParseIntPipe) id: number) {
+    return this.postsService.delete(id);
   }
 }

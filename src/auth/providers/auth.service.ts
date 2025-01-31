@@ -12,8 +12,8 @@ export class AuthService {
     this.logger = new Logger(AuthService.name);
   }
 
-  login(email: string, password: string, id: string) {
-    const user = this.usersService.findOneById('3');
+  login(email: string, password: string, id: number) {
+    const user = this.usersService.findOneById(id);
     return 'SAMPLE_TOKEN';
   }
 
