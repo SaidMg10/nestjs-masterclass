@@ -1,7 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { GetUsersParamDto } from '../dtos/get-users-param.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../user.entity';
+import { Repository } from 'typeorm';
+import { CreateUserDto } from '../dtos/create-user.dto';
 /**
  * Class to connect to Users table and perform business operations
  */
@@ -16,12 +26,22 @@ export class UsersService {
    * @param authService - Instancia del servicio de autenticación, utilizado para las operaciones de login/registro.
    */
   constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
     private readonly logger: Logger,
-    @Inject(forwardRef(() => AuthService))
-    private readonly authService: AuthService,
   ) {
     this.logger = new Logger(UsersService.name);
   }
+
+  async createUser(createUserDto: CreateUserDto) {
+    const existingUser = await this.userRepository.findOne({
+      where: { email: createUserDto.email },
+    });
+    let newUser = this.userRepository.create(createUserDto);
+    newUser = await this.userRepository.save(newUser);
+    return newUser;
+  }
+
   /**
    * The method to get all the users from the database
    * @param getUsersParamDto
@@ -30,7 +50,6 @@ export class UsersService {
    * @returns
    */
   findAll(getUsersParamDto: GetUsersParamDto, limit: number, page: number) {
-    const isAuth = this.authService.isAuth();
     return [
       {
         id: 1,

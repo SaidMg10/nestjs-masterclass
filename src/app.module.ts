@@ -1,9 +1,7 @@
-import { Module } from '@nestjs/common';
-// import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
+import { Logger, Module, OnModuleInit } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EnvConfiguration } from './config/env.config';
 import { JoiValidationSchema } from './config/joi.validator';
-// import { DataSource } from 'typeorm';
 import { LoggerModule } from './logger/logger.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { CloudinaryService } from './cloudinary/cloudinary.service';
@@ -12,6 +10,8 @@ import { MulterModule } from '@nestjs/platform-express';
 import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -20,24 +20,24 @@ import { AuthModule } from './auth/auth.module';
       load: [EnvConfiguration],
       validationSchema: JoiValidationSchema,
     }),
-    // TypeOrmModule.forRootAsync({
-    //   imports: [ConfigModule],
-    //   inject: [ConfigService],
-    //   useFactory: (configService: ConfigService) => ({
-    //     type: 'postgres',
-    //     host: configService.get('DB_HOST'),
-    //     port: +configService.get('DB_PORT'),
-    //     username: configService.get('DB_USERNAME'),
-    //     password: configService.get('DB_PASSWORD'),
-    //     database: configService.get('DB_NAME'),
-    //     autoLoadEntities: true,
-    //     synchronize: true,
-    //   }),
-    //   dataSourceFactory: async (options) => {
-    //     const dataSource = await new DataSource(options).initialize();
-    //     return dataSource;
-    //   },
-    // }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get('DB_HOST'),
+        port: +configService.get('DB_PORT'),
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
+      dataSourceFactory: async (options) => {
+        const dataSource = await new DataSource(options).initialize();
+        return dataSource;
+      },
+    }),
     LoggerModule,
     CloudinaryModule,
     CommonModule,
@@ -49,4 +49,15 @@ import { AuthModule } from './auth/auth.module';
   controllers: [],
   providers: [CloudinaryService],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  private readonly logger = new Logger(AppModule.name);
+
+  constructor(private readonly dataSource: DataSource) {}
+
+  async onModuleInit() {
+    const entities = this.dataSource.entityMetadatas.map(
+      (entity) => entity.name,
+    );
+    this.logger.log(`Entidades cargadas: ${entities.join(', ')}`);
+  }
+}

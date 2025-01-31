@@ -9,10 +9,11 @@ import {
   IsString,
   IsUrl,
   Matches,
+  MaxLength,
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { PostType } from '../enums/post-types.enum';
+import { postType } from '../enums/post-types.enum';
 import { Type } from 'class-transformer';
 import { CreatePostMetaOptionsDto } from './create-posts-meta-options.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
@@ -22,20 +23,22 @@ export class CreatePostDto {
   @IsString()
   @MinLength(4)
   @IsNotEmpty()
+  @MaxLength(512)
   title: string;
 
   @ApiProperty({
-    enum: PostType,
+    enum: postType,
     description: "Possible values  'post', 'page', 'story', 'series'",
   })
-  @IsEnum(PostType)
+  @IsEnum(postType)
   @IsNotEmpty()
-  postType: PostType;
+  postType: postType;
 
   @ApiProperty({
     description: "For example 'my-url'",
   })
   @IsString()
+  @MaxLength(256)
   @IsNotEmpty()
   @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
     message:
@@ -67,6 +70,7 @@ export class CreatePostDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsUrl()
+  @MaxLength(1024)
   featuredImageUrl?: string;
 
   @ApiProperty({
