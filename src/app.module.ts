@@ -21,19 +21,20 @@ import { MetaOptionsModule } from './meta-options/meta-options.module';
       isGlobal: true,
       load: [EnvConfiguration],
       validationSchema: JoiValidationSchema,
+      envFilePath: [`.env.${process.env.NODE_ENV}`, '.env'],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get('DB_HOST'),
-        port: +configService.get('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true,
+        host: configService.get('dbHost'),
+        port: +configService.get('dbPort'),
+        username: configService.get('dbUser'),
+        password: configService.get('dbPassword'),
+        database: configService.get('dbName'),
       }),
       dataSourceFactory: async (options) => {
         const dataSource = await new DataSource(options).initialize();

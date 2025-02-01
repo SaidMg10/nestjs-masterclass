@@ -7,7 +7,7 @@ export const JoiValidationSchema = Joi.object({
   DB_PORT: Joi.number().default(5432),
   DB_USERNAME: Joi.string().default('postgres'),
   PORT: Joi.number().default(3000),
-  NODE_ENV: Joi.string().valid('dev', 'prod', 'test').default('dev'),
+  NODE_ENV: Joi.string().valid('development', 'production', 'test'),
   HOST_API: Joi.string().uri().default('http://localhost:3000/api'),
   LOGGER_LEVEL: Joi.string()
     .valid('log', 'error', 'warn', 'debug')
@@ -15,4 +15,6 @@ export const JoiValidationSchema = Joi.object({
   CLOUDINARY_CLOUD_NAME: Joi.string().required(),
   CLOUDINARY_API_KEY: Joi.string().required(),
   CLOUDINARY_API_SECRET: Joi.string().required(),
+  S3_BUCKET: Joi.string().required(),
+  PROFILE_API_KEY: Joi.string().required(),
 });

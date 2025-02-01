@@ -45,6 +45,28 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
+## Compile and Run the Project with Docker
+
+- For the initial creation, we will always use the `--build` command, for example: `docker-compose up --build`.
+- For detached mode, we will add the `-d` flag at the end of the command, for example: `docker-compose up --build -d`.
+- If the `--build` has already been done, to start the project, we only need to use `docker-compose up`.
+- If we want to remove everything, we will use `docker-compose down`.
+
+## Select the Development Environment
+
+To choose the environment in which the application will run, use the following commands:
+
+```bash
+# Development Mode
+$ NODE_ENV=development docker-compose up 
+
+# Production Mode
+$ NODE_ENV=production docker-compose up 
+
+# Test Mode
+$ NODE_ENV=test docker-compose up 
+```
+
 ## Run tests
 
 ```bash

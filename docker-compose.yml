@@ -14,7 +14,8 @@ services:
   my-service-dev:
     container_name: my-service-dev
     restart: unless-stopped
-    env_file: .env
+    env_file: 
+        - .env.${NODE_ENV}
     build:
       target: dev
       context: .

@@ -1,17 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  BadRequestException,
-  forwardRef,
-  Inject,
-  Injectable,
-  Logger,
-} from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { GetUsersParamDto } from '../dtos/get-users-param.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
+import { ConfigType } from '@nestjs/config';
+import profileConfig from '../config/profile.config';
 /**
  * Class to connect to Users table and perform business operations
  */
@@ -29,6 +25,8 @@ export class UsersService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private readonly logger: Logger,
+    @Inject(profileConfig.KEY)
+    private readonly profileConfiguration: ConfigType<typeof profileConfig>,
   ) {
     this.logger = new Logger(UsersService.name);
   }
@@ -50,6 +48,7 @@ export class UsersService {
    * @returns
    */
   findAll(getUsersParamDto: GetUsersParamDto, limit: number, page: number) {
+    this.logger.log(this.profileConfiguration);
     return [
       {
         id: 1,
