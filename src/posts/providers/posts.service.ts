@@ -1,4 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { UsersService } from 'src/users/providers/users.service';
 import { CreatePostDto } from '../dtos/create-posts.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -41,15 +47,51 @@ export class PostsService {
   }
 
   public async update(patchPostDto: PatchPostDto) {
-    // Find new tags
-    const tags = await this.tagsService.findMultipleTags(patchPostDto.tags);
+    let tags = undefined;
+    let post = undefined;
 
-    // Find the post
-    const post = await this.postRepository.findOneBy({
-      id: patchPostDto.id,
-    });
+    // Find the Tags
+    try {
+      tags = await this.tagsService.findMultipleTags(patchPostDto.tags);
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment please try later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
 
-    // Update post related properties
+    /**
+     * If tags were not found
+     * Need to be equal number of tags
+     */
+    if (!tags || tags.length !== patchPostDto.tags.length) {
+      throw new BadRequestException(
+        'Please check your tag Ids and ensure they are correct',
+      );
+    }
+
+    // Find the Post
+    try {
+      // Returns null if the post does not exist
+      post = await this.postRepository.findOneBy({
+        id: patchPostDto.id,
+      });
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment please try later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
+
+    if (!post) {
+      throw new BadRequestException('The post Id does not exist');
+    }
+
+    // Update the properties
     post.title = patchPostDto.title ?? post.title;
     post.content = patchPostDto.content ?? post.content;
     post.status = patchPostDto.status ?? post.status;
@@ -59,10 +101,21 @@ export class PostsService {
       patchPostDto.featuredImageUrl ?? post.featuredImageUrl;
     post.publishOn = patchPostDto.publishOn ?? post.publishOn;
 
-    // Update the tags
+    // Assign the new tags
     post.tags = tags;
 
-    return await this.postRepository.save(post);
+    // Save the post and return
+    try {
+      await this.postRepository.save(post);
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment please try later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
+    return post;
   }
 
   async delete(id: number) {
