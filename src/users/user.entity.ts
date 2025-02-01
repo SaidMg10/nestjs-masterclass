@@ -17,7 +17,6 @@ export class User {
     type: 'varchar',
     length: 96,
     nullable: true,
-    unique: true,
   })
   lastName: string;
 
@@ -25,6 +24,7 @@ export class User {
     type: 'varchar',
     length: 96,
     nullable: false,
+    unique: true,
   })
   email: string;
 

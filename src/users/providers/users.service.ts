@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
+  forwardRef,
   HttpException,
   HttpStatus,
   Inject,
@@ -13,10 +14,12 @@ import { GetUsersParamDto } from '../dtos/get-users-param.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { ConfigType } from '@nestjs/config';
 import profileConfig from '../config/profile.config';
+import { CreateUserManyProvider } from './create-user-many.provider';
+import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 /**
  * Class to connect to Users table and perform business operations
  */
@@ -33,9 +36,15 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+
     private readonly logger: Logger,
+
     @Inject(profileConfig.KEY)
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
+
+    private readonly dataSource: DataSource,
+
+    private readonly createUsersManyProvider: CreateUserManyProvider,
   ) {
     this.logger = new Logger(UsersService.name);
   }
@@ -120,5 +129,9 @@ export class UsersService {
       throw new NotFoundException(`The user id: ${id} does not exist`);
     }
     return user;
+  }
+
+  async createMany(createManyUsersDto: CreateManyUsersDto) {
+    return await this.createUsersManyProvider.createMany(createManyUsersDto);
   }
 }
