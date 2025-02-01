@@ -1,2 +1,13 @@
 ## Get Request For Posts controller
+{{
+    // pre request scripts
+    const date = new Date();
+    exports.startDate = date.toString();
+    exports.endDate = date.toString();
+
+}}
 GET http://localhost:3000/v1/posts/
+    ?startDate={{startDate}}
+    &endDate={{endDate}}
+    &limit=10
+    &page=1
