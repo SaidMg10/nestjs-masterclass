@@ -10,6 +10,7 @@ import { AuthService } from './providers/auth.service';
 import { SignInDto } from './dtos/singin-dto';
 import { Auth } from './decorators/auth.decorator';
 import { AuthType } from './enums/auth-type.enums';
+import { RefreshTokenDto } from './dtos/refresh-token.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -24,5 +25,11 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   public async singIn(@Body() signInDto: SignInDto) {
     return this.authService.singIn(signInDto);
+  }
+
+  @Post('refresh-token')
+  @HttpCode(HttpStatus.OK)
+  public async refreshTokens(@Body() refreshTokenDto: RefreshTokenDto) {
+    return this.authService.refreshToken(refreshTokenDto);
   }
 }
