@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Controller,
   Get,
@@ -16,6 +17,8 @@ import { PatchUserDto } from './dtos/patch-user.dto';
 import { UsersService } from './providers/users.service';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { CreateManyUsersDto } from './dtos/create-many-users.dto';
+import { AuthType } from 'src/auth/enums/auth-type.enums';
+import { Auth } from 'src/auth/decorators/auth.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -63,6 +66,7 @@ export class UsersController {
   }
 
   @Post()
+  @Auth(AuthType.None)
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }
@@ -74,7 +78,6 @@ export class UsersController {
 
   @Patch()
   patchUser(@Body() patchUserDto: PatchUserDto) {
-    this.logger.debug(patchUserDto instanceof PatchUserDto);
     return 'You sent a patch request to users endpoint';
   }
 }

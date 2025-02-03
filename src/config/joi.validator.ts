@@ -17,4 +17,8 @@ export const JoiValidationSchema = Joi.object({
   CLOUDINARY_API_SECRET: Joi.string().required(),
   S3_BUCKET: Joi.string().required(),
   PROFILE_API_KEY: Joi.string().required(),
+  JWT_SECRET: Joi.string().required(),
+  JWT_TOKEN_AUDIENCE: Joi.string().required(),
+  JWT_TOKEN_ISSUER: Joi.string().required(),
+  JWT_ACCESS_TOKEN_TTL: Joi.number().required(),
 });

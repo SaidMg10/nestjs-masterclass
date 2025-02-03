@@ -3,28 +3,28 @@ POST http://localhost:3000/v1/users
 Content-Type: application/json
 
 {
-    "firstName": "Kai",
+    "firstName": "Bai",
     "lastName": "Doe",
-    "email": "kai@doe.com",
+    "email": "Bai@doe.com",
     "password": "Password123@"
 }
 
 POST http://localhost:3000/v1/users/create-many
 Content-Type: application/json
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoia2FpQGRvZS5jb20iLCJpYXQiOjE3Mzg1NDM2NzMsImV4cCI6MTczODU0NzI3MywiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.a5oOvEalMUc0vDJrKboHD7IFX_hpB_9kELEsSph4IwQ
 {
     "users": 
     [
         {
-            "firstName": "Juan",
+            "firstName": "Kim",
             "lastName": "Doe",
-            "email": "juan@doe.com",
+            "email": "kim@doe.com",
             "password": "Password123@"
         },
         {    
-            "firstName": "Carl",
+            "firstName": "Fai",
             "lastName": "Doe",
-            "email": "carl@doe.com",
+            "email": "fai@doe.com",
             "password": "Password123@"
         }
     ]
