@@ -1,11 +1,11 @@
 POST http://localhost:3000/v1/posts/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoia2FpQGRvZS5jb20iLCJpYXQiOjE3Mzg1NTg2OTcsImV4cCI6MTczODU2MjI5NywiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.8QgoY1EOI3xzj2pCJRfIeZAeuKurGTvWpDaI3FwSzGU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExLCJlbWFpbCI6InNhaWQuYWJyYWhhbS5tLmdAZ21haWwuY29tIiwiaWF0IjoxNzM4NjE3NzU3LCJleHAiOjE3Mzg2MjEzNTcsImF1ZCI6ImxvY2FsaG9zdDozMDAwIiwiaXNzIjoibG9jYWxob3N0OjMwMDAifQ.Tm2Imj3a30hrQI-c4RIFoAT_CCrflwcq68SU76zHJ6o
 
 {
     "title": "What's new with NestJs",
     "postType": "post",
-    "slug": "created-by-kai",
+    "slug": "created-by-user-gugul",
     "status": "draft",
     "content": "test content",
     "schema": "{\r\n    \"@context\": \"https:\/\/schema.org\",\r\n    \"@type\": \"Person\"\r\n  }",
