@@ -7,6 +7,7 @@ const {
   CLD_API_KEY: apiKey,
   CLD_API_SECRET: apiSecret,
   S3_BUCKET: s3Bucket,
+  API_VERSION: apiVersion,
 } = process.env;
 
 export const AppConfiguration = () => ({
@@ -18,4 +19,5 @@ export const AppConfiguration = () => ({
   apiKey,
   apiSecret,
   s3Bucket,
+  apiVersion,
 });
