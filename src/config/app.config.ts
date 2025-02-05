@@ -6,8 +6,12 @@ const {
   CLD_CLOUD_NAME: cloudName,
   CLD_API_KEY: apiKey,
   CLD_API_SECRET: apiSecret,
-  S3_BUCKET: s3Bucket,
   API_VERSION: apiVersion,
+  AWS_PUBLIC_BUCKET_NAME: awsBucketName,
+  AWS_REGION: awsRegion,
+  AWS_CLOUDFRONT_URL: awsCloudfrontURL,
+  AWS_ACCESS_KEY_ID: awsAccessKeyId,
+  AWS_SECRET_ACCESS_KEY: awsSecretAccessKey,
 } = process.env;
 
 export const AppConfiguration = () => ({
@@ -18,6 +22,10 @@ export const AppConfiguration = () => ({
   cloudName,
   apiKey,
   apiSecret,
-  s3Bucket,
   apiVersion,
+  awsBucketName,
+  awsRegion,
+  awsCloudfrontURL,
+  awsAccessKeyId,
+  awsSecretAccessKey,
 });
