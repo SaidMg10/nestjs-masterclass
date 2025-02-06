@@ -12,11 +12,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { User } from '../user.entity';
 import { HashingProvider } from '../../auth/providers/hashing.provider';
+import { MailService } from 'src/mail/providers/mail.service';
 
 @Injectable()
 export class CreateUserProvider {
   constructor(
     private readonly logger: Logger,
+
+    private readonly mailService: MailService,
 
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -61,6 +64,11 @@ export class CreateUserProvider {
           description: 'Error connecting to the database',
         },
       );
+    }
+    try {
+      await this.mailService.sendUserWelcome(newUser);
+    } catch (error) {
+      throw new RequestTimeoutException(error);
     }
     return newUser;
   }

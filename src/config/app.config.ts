@@ -12,6 +12,9 @@ const {
   AWS_CLOUDFRONT_URL: awsCloudfrontURL,
   AWS_ACCESS_KEY_ID: awsAccessKeyId,
   AWS_SECRET_ACCESS_KEY: awsSecretAccessKey,
+  MAIL_HOST: mailHost,
+  SMTP_USERNAME: smptUsername,
+  SMTP_PASSWORD: smptPassword,
 } = process.env;
 
 export const AppConfiguration = () => ({
@@ -28,4 +31,7 @@ export const AppConfiguration = () => ({
   awsCloudfrontURL,
   awsAccessKeyId,
   awsSecretAccessKey,
+  mailHost,
+  smptUsername,
+  smptPassword,
 });
